@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "NPL", "label": "NPL", "shape": "dot", "size": 4, "title": "Emissions [kg]\u003cbr\u003eWLG: 124.2\u003cbr\u003eCHC: 124.388\u003cbr\u003ePMR: 82.8\u003cbr\u003eAKL: 55.902"}, {"id": "WLG", "label": "WLG", "shape": "dot", "size": 17, "title": "Emissions [kg]\u003cbr\u003eNPL: 124.2\u003cbr\u003eTUO: 74.536\u003cbr\u003eROT: 82.8\u003cbr\u003eAKL: 116.402\u003cbr\u003eCHT: 187.308\u003cbr\u003eTIU: 106.964\u003cbr\u003ePMR: 82.8\u003cbr\u003eNPE: 124.2\u003cbr\u003eTRG: 102.608\u003cbr\u003eGIS: 96.8\u003cbr\u003eBHE: 19.844\u003cbr\u003eHLZ: 94.138\u003cbr\u003eIVC: 186.34\u003cbr\u003eNSN: 32.186\u003cbr\u003eCHC: 73.81\u003cbr\u003eDUD: 152.944\u003cbr\u003eZQN: 155.364"}, {"id": "CHC", "label": "CHC", "shape": "dot", "size": 14, "title": "Emissions [kg]\u003cbr\u003eROT: 162.624\u003cbr\u003eNSN: 60.742\u003cbr\u003eNPE: 139.392\u003cbr\u003eHKK: 36.784\u003cbr\u003eNPL: 124.388\u003cbr\u003eIVC: 112.53\u003cbr\u003eAKL: 180.532\u003cbr\u003eZQN: 83.974\u003cbr\u003ePMR: 105.512\u003cbr\u003eCHT: 216.348\u003cbr\u003eDUD: 79.376\u003cbr\u003eHLZ: 161.898\u003cbr\u003eWLG: 73.81\u003cbr\u003eTRG: 173.272"}, {"id": "PMR", "label": "PMR", "shape": "dot", "size": 5, "title": "Emissions [kg]\u003cbr\u003eHLZ: 66.55\u003cbr\u003eWLG: 82.8\u003cbr\u003eAKL: 90.992\u003cbr\u003eCHC: 105.512\u003cbr\u003eNPL: 82.8"}, {"id": "AKL", "label": "AKL", "shape": "dot", "size": 19, "title": "Emissions [kg]\u003cbr\u003eTRG: 34.848\u003cbr\u003eNPE: 79.376\u003cbr\u003eHLZ: 82.8\u003cbr\u003eKKE: 372.6\u003cbr\u003eIVC: 27.83\u003cbr\u003eDUD: 257.246\u003cbr\u003eROT: 82.8\u003cbr\u003eWLG: 116.402\u003cbr\u003eCHC: 180.532\u003cbr\u003eWRE: 82.8\u003cbr\u003ePMR: 90.992\u003cbr\u003eTUO: 53.966\u003cbr\u003eWHK: 52.03\u003cbr\u003eWAG: 80.102\u003cbr\u003eNSN: 120.274\u003cbr\u003eZQN: 248.05\u003cbr\u003eGIS: 81.312\u003cbr\u003eNPL: 55.902\u003cbr\u003ePPQ: 105.028"}, {"id": "TRG", "label": "TRG", "shape": "dot", "size": 5, "title": "Emissions [kg]\u003cbr\u003eAKL: 34.848\u003cbr\u003eWLG: 102.608\u003cbr\u003eNPE: 124.2\u003cbr\u003eWHK: 82.8\u003cbr\u003eCHC: 173.272"}, {"id": "NPE", "label": "NPE", "shape": "dot", "size": 4, "title": "Emissions [kg]\u003cbr\u003eAKL: 79.376\u003cbr\u003eCHC: 139.392\u003cbr\u003eWLG: 124.2\u003cbr\u003eTRG: 124.2"}, {"id": "HLZ", "label": "HLZ", "shape": "dot", "size": 5, "title": "Emissions [kg]\u003cbr\u003eAKL: 82.8\u003cbr\u003ePMR: 66.55\u003cbr\u003eWLG: 94.138\u003cbr\u003eROT: 82.8\u003cbr\u003eCHC: 161.898"}, {"id": "KKE", "label": "KKE", "shape": "dot", "size": 1, "title": "Emissions [kg]\u003cbr\u003eAKL: 372.6"}, {"id": "IVC", "label": "IVC", "shape": "dot", "size": 4, "title": "Emissions [kg]\u003cbr\u003eAKL: 27.83\u003cbr\u003eCHC: 112.53\u003cbr\u003eWLG: 186.34\u003cbr\u003eDUD: 124.2"}, {"id": "DUD", "label": "DUD", "shape": "dot", "size": 4, "title": "Emissions [kg]\u003cbr\u003eAKL: 257.246\u003cbr\u003eIVC: 124.2\u003cbr\u003eCHC: 79.376\u003cbr\u003eWLG: 152.944"}, {"id": "ROT", "label": "ROT", "shape": "dot", "size": 5, "title": "Emissions [kg]\u003cbr\u003eCHC: 162.624\u003cbr\u003eWLG: 82.8\u003cbr\u003eAKL: 82.8\u003cbr\u003eWHK: 82.8\u003cbr\u003eHLZ: 82.8"}, {"id": "WRE", "label": "WRE", "shape": "dot", "size": 1, "title": "Emissions [kg]\u003cbr\u003eAKL: 82.8"}, {"id": "TUO", "label": "TUO", "shape": "dot", "size": 2, "title": "Emissions [kg]\u003cbr\u003eWLG: 74.536\u003cbr\u003eAKL: 53.966"}, {"id": "WHK", "label": "WHK", "shape": "dot", "size": 3, "title": "Emissions [kg]\u003cbr\u003eROT: 82.8\u003cbr\u003eAKL: 52.03\u003cbr\u003eTRG: 82.8"}, {"id": "WAG", "label": "WAG", "shape": "dot", "size": 1, "title": "Emissions [kg]\u003cbr\u003eAKL: 80.102"}, {"id": "NSN", "label": "NSN", "shape": "dot", "size": 3, "title": "Emissions [kg]\u003cbr\u003eCHC: 60.742\u003cbr\u003eAKL: 120.274\u003cbr\u003eWLG: 32.186"}, {"id": "ZQN", "label": "ZQN", "shape": "dot", "size": 3, "title": "Emissions [kg]\u003cbr\u003eCHC: 83.974\u003cbr\u003eAKL: 248.05\u003cbr\u003eWLG: 155.364"}, {"id": "GIS", "label": "GIS", "shape": "dot", "size": 2, "title": "Emissions [kg]\u003cbr\u003eWLG: 96.8\u003cbr\u003eAKL: 81.312"}, {"id": "PPQ", "label": "PPQ", "shape": "dot", "size": 1, "title": "Emissions [kg]\u003cbr\u003eAKL: 105.028"}, {"id": "CHT", "label": "CHT", "shape": "dot", "size": 2, "title": "Emissions [kg]\u003cbr\u003eWLG: 187.308\u003cbr\u003eCHC: 216.348"}, {"id": "TIU", "label": "TIU", "shape": "dot", "size": 1, "title": "Emissions [kg]\u003cbr\u003eWLG: 106.964"}, {"id": "BHE", "label": "BHE", "shape": "dot", "size": 1, "title": "Emissions [kg]\u003cbr\u003eWLG: 19.844"}, {"id": "HKK", "label": "HKK", "shape": "dot", "size": 1, "title": "Emissions [kg]\u003cbr\u003eCHC: 36.784"}]);
+        edges = new vis.DataSet([{"from": "NPL", "to": "WLG", "weight": 124.2}, {"from": "NPL", "to": "CHC", "weight": 124.388}, {"from": "NPL", "to": "PMR", "weight": 82.8}, {"from": "NPL", "to": "AKL", "weight": 55.902}, {"from": "AKL", "to": "TRG", "weight": 34.848}, {"from": "AKL", "to": "NPE", "weight": 79.376}, {"from": "AKL", "to": "HLZ", "weight": 82.8}, {"from": "AKL", "to": "KKE", "weight": 372.6}, {"from": "AKL", "to": "IVC", "weight": 27.83}, {"from": "AKL", "to": "DUD", "weight": 257.246}, {"from": "AKL", "to": "ROT", "weight": 82.8}, {"from": "AKL", "to": "WLG", "weight": 116.402}, {"from": "AKL", "to": "CHC", "weight": 180.532}, {"from": "AKL", "to": "WRE", "weight": 82.8}, {"from": "AKL", "to": "PMR", "weight": 90.992}, {"from": "AKL", "to": "TUO", "weight": 53.966}, {"from": "AKL", "to": "WHK", "weight": 52.03}, {"from": "AKL", "to": "WAG", "weight": 80.102}, {"from": "AKL", "to": "NSN", "weight": 120.274}, {"from": "AKL", "to": "ZQN", "weight": 248.05}, {"from": "AKL", "to": "GIS", "weight": 81.312}, {"from": "AKL", "to": "PPQ", "weight": 105.028}, {"from": "ROT", "to": "CHC", "weight": 162.624}, {"from": "ROT", "to": "WLG", "weight": 82.8}, {"from": "ROT", "to": "WHK", "weight": 82.8}, {"from": "ROT", "to": "HLZ", "weight": 82.8}, {"from": "WLG", "to": "TUO", "weight": 74.536}, {"from": "WLG", "to": "CHT", "weight": 187.308}, {"from": "WLG", "to": "TIU", "weight": 106.964}, {"from": "WLG", "to": "PMR", "weight": 82.8}, {"from": "WLG", "to": "NPE", "weight": 124.2}, {"from": "WLG", "to": "TRG", "weight": 102.608}, {"from": "WLG", "to": "GIS", "weight": 96.8}, {"from": "WLG", "to": "BHE", "weight": 19.844}, {"from": "WLG", "to": "HLZ", "weight": 94.138}, {"from": "WLG", "to": "IVC", "weight": 186.34}, {"from": "WLG", "to": "NSN", "weight": 32.186}, {"from": "WLG", "to": "CHC", "weight": 73.81}, {"from": "WLG", "to": "DUD", "weight": 152.944}, {"from": "WLG", "to": "ZQN", "weight": 155.364}, {"from": "NSN", "to": "CHC", "weight": 60.742}, {"from": "DUD", "to": "IVC", "weight": 124.2}, {"from": "DUD", "to": "CHC", "weight": 79.376}, {"from": "NPE", "to": "CHC", "weight": 139.392}, {"from": "NPE", "to": "TRG", "weight": 124.2}, {"from": "PMR", "to": "HLZ", "weight": 66.55}, {"from": "PMR", "to": "CHC", "weight": 105.512}, {"from": "CHC", "to": "HKK", "weight": 36.784}, {"from": "CHC", "to": "IVC", "weight": 112.53}, {"from": "CHC", "to": "ZQN", "weight": 83.974}, {"from": "CHC", "to": "CHT", "weight": 216.348}, {"from": "CHC", "to": "HLZ", "weight": 161.898}, {"from": "CHC", "to": "TRG", "weight": 173.272}, {"from": "WHK", "to": "TRG", "weight": 82.8}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
